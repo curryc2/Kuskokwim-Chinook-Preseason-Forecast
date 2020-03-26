@@ -40,3 +40,6 @@ vignettes/*.pdf
 
 # The /doc folder
 /doc
+
+# Ignore .rds model output files
+*.rds
