@@ -26,7 +26,7 @@ require(reshape2)
 require(yardstick)
 
 #CONTROL SECTION ==========================================================
-do.est <- TRUE
+do.est <- FALSE
 
 n.chains <- 4
 n.iter <- 1e5#2e4
@@ -145,13 +145,12 @@ if(do.est==TRUE) {
   #Save Output
   saveRDS(fit, file=file.path(dir.output,"fit.rds"))
   
-  
 }else {
   fit <- readRDS(file=file.path(dir.output, "fit.rds"))
 }
 
-# Save Summary file as a .csv
-# write.csv(summary(fit)$summary, file=file.path(dir.figs, paste0(temp.species,"_summary.csv")))
+# Save Summary
+write.csv(summary(fit)$summary, file=file.path(dir.figs, "fit_summary.csv"))
 
 
 # Extract Parameter Samples
