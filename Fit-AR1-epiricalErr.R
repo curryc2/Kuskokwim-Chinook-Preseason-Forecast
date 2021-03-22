@@ -24,6 +24,7 @@ require(Mcomp)
 require(loo)
 require(reshape2)
 require(yardstick)
+require(plotly)
 
 #CONTROL SECTION ==========================================================
 do.est <- FALSE
@@ -58,7 +59,7 @@ dir.create(dir.output, recursive=TRUE)
 
 
 # Read in Data =================================================================
-dat <- read.csv(file.path(dir.data, "Kusko-RunSize.csv"), header=TRUE)
+dat <- read.csv(file.path(dir.data, "Kusko-RunSize-2020.csv"), header=TRUE)
 head(dat)
 
 # CV Conversion to Logspace ====================================================
@@ -365,12 +366,16 @@ g.harv.cum <- harv.all %>% ggplot(aes(x=harvest/1e3, color=Escapement, group=Esc
   stat_ecdf(lwd=2, alpha=0.7) +
   # facet_wrap(~Escapement, ncol=1) +
   # theme(legend.position='none') +
-  xlab("2020 Potential Harvest (thousands)") +
-  ylab("Probability of a Total Harvest < X") +
-  # coord_cartesian(xlim=c(150,300)) + 
+  xlab("2020 Harvest Target (thousands of salmon): X") +
+  ylab("Probability of Falling Below a Harvest Target of X") +
+  coord_cartesian(xlim=c(0,300)) +
   ggtitle("Kuskokwim River Chinook Salmon: AR1-Empirical Model") +
-  theme(legend.position = "top")
+  theme(legend.position = "top") +
+  geom_vline(xintercept=67.2, color='red')+
+  geom_vline(xintercept=109.8, color='red')
 g.harv.cum
+
+# ggplotly(g.harv.cum)
 
 ggsave(file.path(dir.figs, "Potential Harvest.pdf"), plot=g.harv.cum, height=5, width=8, units='in')
 
