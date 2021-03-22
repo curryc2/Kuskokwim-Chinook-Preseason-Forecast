@@ -35,7 +35,7 @@ dir.create(dir.figs, recursive=TRUE)
 
 
 # Read in Data =================================================================
-dat <- read.csv(file.path(dir.data, "Kusko-RunSize.csv"), header=TRUE)
+dat <- read.csv(file.path(dir.data, "Kusko-RunSize-2020.csv"), header=TRUE)
 head(dat)
 
 # Calculate Normal Error =======================================================
@@ -72,6 +72,29 @@ dat <- dat %>% mutate("diff"=est-fcst,
 
 mean(dat$ln_resid, na.rm=TRUE)
 sd(dat$ln_resid, na.rm=TRUE)
+
+# Calculate Current year forecast ===================================
+# Extract % error for the last 7 years
+max.ref <- length(dat$pct)
+pct.err.7 <- dat$pct[(max.ref-6):max.ref]
+length(pct.err.7)
+
+# Check for 2020 fcst
+# mean(abs(dat$pct[(max.ref-7):(max.ref-1)]))
+
+# Average absolute percent error over last seven years
+aape.7 <- mean(abs(pct.err.7))
+aape.7
+
+# Calculate forecast
+curr.adfg.fcst <- dat$est[length(dat$est)]
+curr.adfg.range.low <- curr.adfg.fcst - aape.7*curr.adfg.fcst
+curr.adfg.range.up <- curr.adfg.fcst + aape.7*curr.adfg.fcst
+
+# Approximate ADFG forecast
+write.csv(data.frame(aape.7,curr.adfg.fcst, curr.adfg.range.low, curr.adfg.range.up), 
+          file=file.path(dir.figs, "Approximate ADFG Forecast.csv"))
+
 
 # Subset for last 10, 20 all =========================================
 dat.10 <- dat %>% filter(year> max(dat$year)-10)
