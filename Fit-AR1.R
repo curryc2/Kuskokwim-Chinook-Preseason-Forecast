@@ -58,48 +58,48 @@ dir.create(dir.output, recursive=TRUE)
 
 
 # Read in Data =================================================================
-dat <- read.csv(file.path(dir.data, "Kusko-RunSize.csv"), header=TRUE)
+dat <- read.csv(file.path(dir.data, "Kusko-RunSize-2020.csv"), header=TRUE)
 head(dat)
 
 # CV Conversion to Logspace ====================================================
-dat$ln_est <- log(dat$est)
-
-
-dat$cv_interp <- NA
-
-# Deal with missing uncertainty estimates
-i <- 1
-for(i in 1:nrow(dat)) {
-  if(is.na(dat$cv[i])) { #CV is missing
-    if(cv.method=="last_year") {
-      dat$cv_interp[i] <- dat$cv[i-1]
-    }
-    if(cv.method=="sma") {
-      # Fit simple moving average
-      sma <- sma(dat$cv[1:(i-1)], h=1)
-      # Fitted values and +1 forecast
-      sma.fit <- as.vector(sma$fitted[,1])
-      sma.fcst <- sma$forecast[1]
-      
-      # Fill in predicted value
-      dat$cv_interp[i] <- sma.fcst
-      
-      # Trial Plot
-      # plot(x=dat$year[1:(i-1)], y=dat$cv[1:(i-1)], type='l', col='gray', xlim=c(min(dat$year), max(dat$year)))
-      # points(x=dat$year[1:(i-1)], y=dat$cv[1:(i-1)], pch=21, bg='gray')
-      # lines(x=dat$year[1:(i-1)], y=sma.fit, col=rgb(1,0,0, alpha=0.5), lwd=2)
-      # # Predicted
-      # segments(x0=dat$year[i-1], y0=dat$cv[i-1], x1=dat$year[i], y1=sma.fcst, lwd=2, lty=3)
-    }
-  } else {
-    dat$cv_interp[i] <- dat$cv[i]
-  }
-}
-
-# Calculate log variance and CV 
-dat$ln_var <- log(dat$cv_interp^2 + 1)
-dat$ln_sd <- sqrt(dat$ln_var)
-dat$ln_cv <- dat$ln_sd/dat$ln_est
+# dat$ln_est <- log(dat$est)
+# 
+# 
+# dat$cv_interp <- NA
+# 
+# # Deal with missing uncertainty estimates
+# i <- 1
+# for(i in 1:nrow(dat)) {
+#   if(is.na(dat$cv[i])) { #CV is missing
+#     if(cv.method=="last_year") {
+#       dat$cv_interp[i] <- dat$cv[i-1]
+#     }
+#     if(cv.method=="sma") {
+#       # Fit simple moving average
+#       sma <- sma(dat$cv[1:(i-1)], h=1)
+#       # Fitted values and +1 forecast
+#       sma.fit <- as.vector(sma$fitted[,1])
+#       sma.fcst <- sma$forecast[1]
+#       
+#       # Fill in predicted value
+#       dat$cv_interp[i] <- sma.fcst
+#       
+#       # Trial Plot
+#       # plot(x=dat$year[1:(i-1)], y=dat$cv[1:(i-1)], type='l', col='gray', xlim=c(min(dat$year), max(dat$year)))
+#       # points(x=dat$year[1:(i-1)], y=dat$cv[1:(i-1)], pch=21, bg='gray')
+#       # lines(x=dat$year[1:(i-1)], y=sma.fit, col=rgb(1,0,0, alpha=0.5), lwd=2)
+#       # # Predicted
+#       # segments(x0=dat$year[i-1], y0=dat$cv[i-1], x1=dat$year[i], y1=sma.fcst, lwd=2, lty=3)
+#     }
+#   } else {
+#     dat$cv_interp[i] <- dat$cv[i]
+#   }
+# }
+# 
+# # Calculate log variance and CV 
+# dat$ln_var <- log(dat$cv_interp^2 + 1)
+# dat$ln_sd <- sqrt(dat$ln_var)
+# dat$ln_cv <- dat$ln_sd/dat$ln_est
 
 dat
 
