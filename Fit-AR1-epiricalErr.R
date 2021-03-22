@@ -275,17 +275,17 @@ ggsave(file.path(dir.figs,"Residuals.pdf"), plot=g, height=6, width=8, units="in
 # Plot: Forecast =================================================
 par(mfrow=c(3,1))
 hist(pars$fcst/1e3, main="AR1 Model: Estimation Uncertainty in Point Estimate",
-       xlab="2020 Predicted Run Size (thousands)", col='blue', 
+       xlab="2021 Predicted Run Size (thousands)", col='blue', 
        freq=FALSE, breaks=100)
 
 
 hist(pars$post_fcst/1e3, main="AR1 Model: Posterior Predictive Distribution",
-     xlab="2020 Predicted Run Size (thousands)", col='blue', 
+     xlab="2021 Predicted Run Size (thousands)", col='blue', 
      freq=FALSE, breaks=100)
 
 
 hist(pars$post_fcst_unc/1e3, main="AR1 Model: Posterior Predictive Distribution (uncorrected)",
-     xlab="2020 Predicted Run Size (thousands)", col='blue', 
+     xlab="2021 Predicted Run Size (thousands)", col='blue', 
      freq=FALSE, breaks=100)
 
 
@@ -313,10 +313,10 @@ plotPost(pars$post_fcst_unc/1e3, xlim=c(100,400))
 x.lim <- c(0,300)
 pdf(file.path(dir.figs, "Best post_fcst.pdf"), height=6, width=6)
 plotPost(pars$post_fcst/1e3, xlim=x.lim,
-         xlab="2020 Predicted Run Size (thousands)", ylab="Relative Probability",
+         xlab="2021 Predicted Run Size (thousands)", ylab="Relative Probability",
          main="Kuskokwim River Chinook Salmon: AR1-Empirical Model")
 plotPost(pars$post_fcst/1e3, xlim=x.lim,
-         xlab="2020 Predicted Run Size (thousands)", ylab="Relative Probability",
+         xlab="2021 Predicted Run Size (thousands)", ylab="Relative Probability",
          main="Kuskokwim River Chinook Salmon: AR1-Empirical Model", showCurve=TRUE)
 dev.off()
 
@@ -329,9 +329,9 @@ g.cum <- data.frame(pars$post_fcst) %>% ggplot(aes(x=pars.post_fcst/1e3)) +
   stat_ecdf(lwd=2, alpha=0.7, col="red") +
   # facet_wrap(~Forecast, ncol=1, scales="free_x") +
   # theme(legend.position='none') +
-  xlab("2020 Predicted Run Size (thousands)") +
+  xlab("2021 Predicted Run Size (thousands)") +
   ylab("Probability of a Run Size < X") +
-  coord_cartesian(xlim=c(150,300)) + 
+  coord_cartesian(xlim=c(0,300)) + 
   ggtitle("Kuskokwim River Chinook Salmon: AR1-Empirical Model")
 g.cum
 
@@ -366,9 +366,9 @@ g.harv.cum <- harv.all %>% ggplot(aes(x=harvest/1e3, color=Escapement, group=Esc
   stat_ecdf(lwd=2, alpha=0.7) +
   # facet_wrap(~Escapement, ncol=1) +
   # theme(legend.position='none') +
-  xlab("2020 Harvest Target (thousands of salmon): X") +
+  xlab("2021 Harvest Target (thousands of salmon): X") +
   ylab("Probability of Falling Below a Harvest Target of X") +
-  coord_cartesian(xlim=c(0,300)) +
+  coord_cartesian(xlim=c(0,150)) +
   ggtitle("Kuskokwim River Chinook Salmon: AR1-Empirical Model") +
   theme(legend.position = "top") +
   geom_vline(xintercept=67.2, color='red')+

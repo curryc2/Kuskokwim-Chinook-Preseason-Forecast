@@ -79,7 +79,7 @@ g <- ggplot(list.all, aes(x=Model, y=fcst/1e3, fill=Model)) +
        # coord_cartesian(ylim=c(0, 500)) +
        coord_flip(ylim=c(0,300)) +
        ylab("Chinook Salmon Abundance (thousands)") +
-       ggtitle("Posterior Predictive Distributions for 2020 Forecast") +
+       ggtitle("Posterior Predictive Distributions for 2021 Forecast") +
        annotate("rect", ymin=adfg.range[1], ymax=adfg.range[2], xmin=-Inf, xmax=Inf, alpha=0.2, fill=rgb(1,0,0, alpha=0.2)) +
        theme(legend.position="none")
 
@@ -97,7 +97,7 @@ g <- ggplot(list.all, aes(x=Model, y=fcst/1e3, fill=Model)) +
        stat_summary(fun.y="mean", colour="black", size=3, geom="point", pch=21) +
        coord_flip(ylim=c(0,300)) +
        ylab("Chinook Salmon Abundance (thousands)") +
-       ggtitle("Posterior Predictive Distributions for 2020 Forecast") +
+       ggtitle("Posterior Predictive Distributions for 2021 Forecast") +
        annotate("rect", ymin=adfg.range[1], ymax=adfg.range[2], xmin=-Inf, xmax=Inf, alpha=0.2, fill=rgb(1,0,0, alpha=0.2)) +
        theme(legend.position="none")
 
@@ -115,7 +115,7 @@ g <- list.all %>%  filter(Model=="AR1-Empirical") %>%  ggplot(aes(x=Model, y=fcs
   # coord_cartesian(ylim=c(0, 500)) +
   coord_flip(ylim=c(0,300)) +
   ylab("Chinook Salmon Abundance (thousands)") +
-  ggtitle("Posterior Predictive Distributions for 2020 Forecast") +
+  ggtitle("Posterior Predictive Distributions for 2021 Forecast") +
   annotate("rect", ymin=adfg.range[1], ymax=adfg.range[2], xmin=-Inf, xmax=Inf, alpha=0.2, fill=rgb(1,0,0, alpha=0.2)) +
   theme(legend.position="none")
 
@@ -133,7 +133,7 @@ g <- list.all %>% filter(Model=="AR1-Empirical") %>% ggplot(aes(x=Model, y=fcst/
   stat_summary(fun.y="mean", colour="black", size=3, geom="point", pch=21) +
   coord_flip(ylim=c(0,300)) +
   ylab("Chinook Salmon Abundance (thousands)") +
-  ggtitle("Posterior Predictive Distributions for 2020 Forecast") +
+  ggtitle("Posterior Predictive Distributions for 2021 Forecast") +
   annotate("rect", ymin=adfg.range[1], ymax=adfg.range[2], xmin=-Inf, xmax=Inf, alpha=0.2, fill=rgb(1,0,0, alpha=0.2)) +
   theme(legend.position="none")
 
@@ -141,11 +141,27 @@ g
 ggsave(file.path(dir.figs,"Uncertainty Compare_AR1 Only.png"), plot=g, height=3, width=8, units='in')
 
 
+# Versions without ADFG expectation ===========
 
+g <- list.all %>% filter(Model=="AR1-Empirical") %>% ggplot(aes(x=Model, y=fcst/1e3, fill=Model)) +
+  theme_dark() +
+  scale_fill_tableau() +
+  geom_violin(alpha = 0.5, lwd=0.1, scale='width') +
+  stat_summary(fun.y="q.95", colour="black", geom="line", lwd=0.75) +
+  stat_summary(fun.y="q.50", colour="black", geom="line", lwd=1.55) +
+  stat_summary(fun.y="mean", colour="black", size=3, geom="point", pch=21) +
+  coord_flip(ylim=c(0,300)) +
+  ylab("Chinook Salmon Abundance (thousands)") +
+  ggtitle("Posterior Predictive Distributions for 2021 Forecast") +
+  # annotate("rect", ymin=adfg.range[1], ymax=adfg.range[2], xmin=-Inf, xmax=Inf, alpha=0.2, fill=rgb(1,0,0, alpha=0.2)) +
+  theme(legend.position="none")
 
+g
+ggsave(file.path(dir.figs,"Uncertainty Compare_AR1 Only_noADFG_1.png"), plot=g, height=2, width=6, units='in')
 
-
-
+g <- g + theme_linedraw() + theme(legend.position="none")
+g
+ggsave(file.path(dir.figs,"Uncertainty Compare_AR1 Only_noADFG_2.png"), plot=g, height=2, width=6, units='in')
 
 
 
